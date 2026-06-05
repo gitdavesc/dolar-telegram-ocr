@@ -11,10 +11,14 @@ with sync_playwright() as p:
     page.screenshot(path="captura.png", full_page=True)
 
     browser.close()
+
+import os
+
+print(os.listdir("."))
     
 import requests
 
-with open("cambio_online.png", "rb") as f:
+with open("captura.png", "rb") as f:
     r = requests.post(
         "https://api.ocr.space/parse/image",
         files={"filename": f},
