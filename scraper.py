@@ -1,9 +1,19 @@
 import requests
 import os
+from datetime import datetime
 from playwright.sync_api import sync_playwright
 
-# CLIP DEL TC
 tc_clip = {"x": 346, "y": 501, "width": 474 - 346, "height": 1073 - 501}
+
+def es_feriado_peru():
+    try:
+        año = datetime.now().year
+        hoy = datetime.now().strftime("%Y-%m-%d")
+        url = f"https://date.nager.at/api/v3/PublicHolidays/{año}/PE"
+        feriados = requests.get(url, timeout=10).json()
+        return any(f["date"] == hoy for f in feriados)
+    except:
+        return False
 
 def ocr_image(path, apikey):
     with open(path, "rb") as f:
@@ -26,6 +36,11 @@ def extraer_par(texto):
             pass
     return nums[:2] if len(nums) >= 2 else (None, None)
 
+# FILTRO FERIADOS
+if es_feriado_peru():
+    print("Feriado en Perú, ejecución detenida")
+    exit()
+
 with sync_playwright() as p:
     browser = p.chromium.launch()
     page = browser.new_page(viewport={"width": 1366, "height": 2500})
@@ -44,7 +59,6 @@ with sync_playwright() as p:
 
     texto_ocr = f"Compra: {compra} | Venta: {venta}"
 
-    # VARIABLES DE ENTORNO (fallback si no están definidas)
     token = os.environ.get("TELEGRAM_TOKEN", "")
     chat_id = os.environ.get("TELEGRAM_CHAT_ID", "")
 
@@ -56,8 +70,6 @@ with sync_playwright() as p:
                 "text": texto_ocr
             }
         )
-    else:
-        print("Telegram no configurado")
 
     print(texto_ocr)
 
