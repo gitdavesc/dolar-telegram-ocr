@@ -5,8 +5,8 @@ from playwright.sync_api import sync_playwright
 
 tc_clip = {"x": 346, "y": 501, "width": 474 - 346, "height": 1073 - 501}
 
-GROUP_CHAT_ID = "-1001763327225"
 OLD_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
+CHANNEL = "@canaldolarperu"
 
 def es_feriado_peru():
     try:
@@ -64,16 +64,18 @@ with sync_playwright() as p:
     token = os.environ.get("TELEGRAM_TOKEN", "")
 
     if token:
+        # canal
+        requests.post(
+            f"https://api.telegram.org/bot{token}/sendMessage",
+            data={"chat_id": CHANNEL, "text": texto_ocr}
+        )
+
+        # chat antiguo
         if OLD_CHAT_ID:
             requests.post(
                 f"https://api.telegram.org/bot{token}/sendMessage",
                 data={"chat_id": OLD_CHAT_ID, "text": texto_ocr}
             )
-
-        requests.post(
-            f"https://api.telegram.org/bot{token}/sendMessage",
-            data={"chat_id": GROUP_CHAT_ID, "text": texto_ocr}
-        )
 
     print(texto_ocr)
 
