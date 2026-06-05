@@ -20,14 +20,13 @@ jobs:
       - run: playwright install chromium
 
       - run: python scraper.py
-
+        env:
+          OCR_API_KEY: ${{ secrets.OCR_API_KEY }}
       - uses: actions/upload-artifact@v4
         with:
           name: captura
           path: captura.png
 
           
-      - run: python scraper.py
-        env:
-          OCR_API_KEY: ${{ secrets.OCR_API_KEY }}
+     
 
