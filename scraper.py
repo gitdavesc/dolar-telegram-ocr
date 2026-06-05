@@ -5,6 +5,8 @@ from playwright.sync_api import sync_playwright
 
 tc_clip = {"x": 346, "y": 501, "width": 474 - 346, "height": 1073 - 501}
 
+GROUP_CHAT_ID = "-1001763327225"
+
 def es_feriado_peru():
     try:
         año = datetime.now().year
@@ -36,9 +38,8 @@ def extraer_par(texto):
             pass
     return nums[:2] if len(nums) >= 2 else (None, None)
 
-# FILTRO FERIADOS
 if es_feriado_peru():
-    print("Feriado en Perú, ejecución detenida")
+    print("Feriado en Perú, no se ejecuta")
     exit()
 
 with sync_playwright() as p:
@@ -60,13 +61,12 @@ with sync_playwright() as p:
     texto_ocr = f"Compra: {compra} | Venta: {venta}"
 
     token = os.environ.get("TELEGRAM_TOKEN", "")
-    chat_id = os.environ.get("TELEGRAM_CHAT_ID", "")
 
-    if token and chat_id:
+    if token:
         requests.post(
             f"https://api.telegram.org/bot{token}/sendMessage",
             data={
-                "chat_id": chat_id,
+                "chat_id": GROUP_CHAT_ID,
                 "text": texto_ocr
             }
         )
