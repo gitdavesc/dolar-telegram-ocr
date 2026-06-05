@@ -16,7 +16,6 @@ import os
 
 print(os.listdir("."))
 
-apikey = os.environ["K85573583588957"]
     
 import requests
 
@@ -24,8 +23,9 @@ with open("captura.png", "rb") as f:
     r = requests.post(
         "https://api.ocr.space/parse/image",
         files={"filename": f},
+        apikey = os.environ["OCR_API_KEY"]
         data={
-            "apikey": "K85573583588957",
+            "apikey": apikey,
             "language": "spa"
         }
     )
