@@ -15,6 +15,8 @@ with sync_playwright() as p:
 import os
 
 print(os.listdir("."))
+
+apikey = os.environ["K85573583588957"]
     
 import requests
 
