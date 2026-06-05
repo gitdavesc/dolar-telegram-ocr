@@ -8,13 +8,6 @@ with sync_playwright() as p:
 
     page.wait_for_timeout(15000)
 
-page.screenshot(
-    path="cambio_online.png",
-    clip={
-        "x": 0,
-        "y": 180,
-        "width": 1366,
-        "height": 700
-    }
-)
+    page.screenshot(path="captura.png", full_page=True)
+
     browser.close()
