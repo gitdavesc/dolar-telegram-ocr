@@ -2,9 +2,12 @@ from playwright.sync_api import sync_playwright
 
 with sync_playwright() as p:
     browser = p.chromium.launch()
-    page = browser.new_page()
-    page.goto("https://cuantoestaeldolar.pe/")
-    page.screenshot(path="captura.png", full_page=True)
-    browser.close()
+    page = browser.new_page(viewport={"width": 1366, "height": 2500})
 
-print("captura creada")
+    page.goto("https://cuantoestaeldolar.pe/")
+
+    page.wait_for_timeout(15000)
+
+    page.screenshot(path="captura.png", full_page=True)
+
+    browser.close()
