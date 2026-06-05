@@ -18,15 +18,15 @@ def ocr_image(path, apikey):
     return r.json()
 
 def limpiar_tc(texto):
-    lineas = [l.strip() for l in texto.split("\n") if l.strip()]
-    nums = []
-    for l in lineas:
-        l = l.replace("A ", "").replace("v ", "").replace("u ", "")
+    for l in texto.split("\n"):
+        l = l.strip().replace("A ", "").replace("v ", "").replace("u ", "")
         try:
-            nums.append(float(l))
+            val = float(l)
+            if 3.2 <= val <= 3.8:
+                return val
         except:
             pass
-    return nums[:2]
+    return None
 
 with sync_playwright() as p:
     browser = p.chromium.launch()
@@ -46,11 +46,12 @@ with sync_playwright() as p:
         data = ocr_image(path, apikey)
         raw = data["ParsedResults"][0]["ParsedText"]
 
-        tc = limpiar_tc(raw)
+        compra = limpiar_tc(raw)
+        venta = limpiar_tc(raw)  # mismo OCR, solo primer valor útil
 
         resultado.append({
-            "compra": tc[0] if len(tc) > 0 else None,
-            "venta": tc[1] if len(tc) > 1 else None
+            "compra": compra,
+            "venta": venta
         })
 
     print(resultado)
