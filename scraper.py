@@ -19,7 +19,7 @@ with open("cambio_online.png", "rb") as f:
         "https://api.ocr.space/parse/image",
         files={"filename": f},
         data={
-            "apikey": "TU_API_KEY",
+            "apikey": "K85573583588957",
             "language": "spa"
         }
     )
