@@ -1,6 +1,6 @@
-from playwright.sync_api import sync_playwright
-import os
 import requests
+import os
+from playwright.sync_api import sync_playwright
 
 tc_clip = {"x": 346, "y": 501, "width": 474 - 346, "height": 1073 - 501}
 
@@ -41,11 +41,17 @@ with sync_playwright() as p:
 
     compra, venta = extraer_par(raw)
 
-    resultado = {
-        "compra": compra,
-        "venta": venta
-    }
+    texto_ocr = f"Compra: {compra} | Venta: {venta}"
 
-    print(resultado)
+    token = os.environ["TELEGRAM_TOKEN"]
+    chat_id = os.environ["TELEGRAM_CHAT_ID"]
+
+    requests.post(
+        f"https://api.telegram.org/bot{token}/sendMessage",
+        data={
+            "chat_id": chat_id,
+            "text": texto_ocr
+        }
+    )
 
     browser.close()
