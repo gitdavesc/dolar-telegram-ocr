@@ -8,7 +8,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
@@ -22,11 +21,10 @@ jobs:
       - run: python scraper.py
         env:
           OCR_API_KEY: ${{ secrets.OCR_API_KEY }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
       - uses: actions/upload-artifact@v4
         with:
           name: captura
           path: captura.png
-
-          
-     
-
