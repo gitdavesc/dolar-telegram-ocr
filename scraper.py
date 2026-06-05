@@ -2,6 +2,7 @@ import requests
 import os
 from playwright.sync_api import sync_playwright
 
+# CLIP DEL TC
 tc_clip = {"x": 346, "y": 501, "width": 474 - 346, "height": 1073 - 501}
 
 def ocr_image(path, apikey):
@@ -43,15 +44,21 @@ with sync_playwright() as p:
 
     texto_ocr = f"Compra: {compra} | Venta: {venta}"
 
-    token = os.environ["TELEGRAM_TOKEN"]
-    chat_id = os.environ["TELEGRAM_CHAT_ID"]
+    # VARIABLES DE ENTORNO (fallback si no están definidas)
+    token = os.environ.get("TELEGRAM_TOKEN", "")
+    chat_id = os.environ.get("TELEGRAM_CHAT_ID", "")
 
-    requests.post(
-        f"https://api.telegram.org/bot{token}/sendMessage",
-        data={
-            "chat_id": chat_id,
-            "text": texto_ocr
-        }
-    )
+    if token and chat_id:
+        requests.post(
+            f"https://api.telegram.org/bot{token}/sendMessage",
+            data={
+                "chat_id": chat_id,
+                "text": texto_ocr
+            }
+        )
+    else:
+        print("Telegram no configurado")
+
+    print(texto_ocr)
 
     browser.close()
