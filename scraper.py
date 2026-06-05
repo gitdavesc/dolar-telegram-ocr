@@ -11,3 +11,17 @@ with sync_playwright() as p:
     page.screenshot(path="captura.png", full_page=True)
 
     browser.close()
+    
+import requests
+
+with open("cambio_online.png", "rb") as f:
+    r = requests.post(
+        "https://api.ocr.space/parse/image",
+        files={"filename": f},
+        data={
+            "apikey": "TU_API_KEY",
+            "language": "spa"
+        }
+    )
+
+print(r.text)
