@@ -13,17 +13,17 @@ with sync_playwright() as p:
     browser.close()
 
 import os
+import requests
 
 print(os.listdir("."))
 
     
-import requests
+apikey = os.environ["OCR_API_KEY"]
 
 with open("captura.png", "rb") as f:
     r = requests.post(
         "https://api.ocr.space/parse/image",
         files={"filename": f},
-        apikey = os.environ["OCR_API_KEY"]
         data={
             "apikey": apikey,
             "language": "spa"
