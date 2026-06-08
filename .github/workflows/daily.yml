@@ -1,7 +1,7 @@
 name: OCR Dolar
 on:
   schedule:
-    - cron: '35 15 * * 1-5'
+    - cron: '42 15 * * 1-5'
     - cron: '0 17 * * 1-5'
   workflow_dispatch:
 
