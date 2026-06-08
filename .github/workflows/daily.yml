@@ -1,5 +1,4 @@
 name: OCR Dolar
-
 on:
   schedule:
     - cron: '30 14 * * 1-5'
